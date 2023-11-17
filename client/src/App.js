@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import {React, BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import Auth from "./Authentication/Auth";
+import { useEffect, useState } from "react";
+import { getToken } from "./Misc/Tokens";
+import { CreateSurvey } from "./Components/CreateSurvey";
+import "./App.css";
+import { View } from "./Components/View";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+	const [auth, setAuth] = useState(false);
+
+	useEffect(() => {
+		setAuth(getToken() !== null)
+	}, [])
+
+
+		return (
+			<Router>
+				<Routes>
+					{auth ? (
+					<>
+						<Route path="/" element={<CreateSurvey />} />
+						<Route path="/view" element={<View />} />
+						<Route path="/login" element={<Auth login={true} />} />
+						<Route path="/signup" element={<Auth login={false} />} />
+					</>
+					) : (
+					<>
+						<Route path="*" element={<Auth login={true} />} />
+						<Route path="/view" element={<View/>} />
+					</>
+					)}
+				</Routes>
+   			</Router>
+		);
 }
+
 
 export default App;
