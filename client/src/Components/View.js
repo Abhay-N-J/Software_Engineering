@@ -20,13 +20,11 @@ export const View = () => {
             user: params.get('user'),
             survey: params.get('survey')
         }
-        console.log(body)
         Axios.put('/submit', body,{
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
         }).then(res => {
-            console.log(res)
             if (res?.data?.error === false) {
                 alert("Form Submit successfully")
             }
@@ -76,8 +74,6 @@ export const View = () => {
 
 export const SurveyForm = ({ surveyData, onChange, onSubmit, answers}) => {
   const handleInputChange = (questionIndex, value) => {
-    // Handle the form input changes here
-    console.log(`Selected value for question ${questionIndex + 1}: ${value}`);
     answers[questionIndex] = value
     onChange(answers)
   };
@@ -96,7 +92,7 @@ export const SurveyForm = ({ surveyData, onChange, onSubmit, answers}) => {
                 onChange={(value) => handleInputChange(questionIndex, value)}
               >
                 {question.options.map((option, optionIndex) => (
-                  <ToggleButton key={optionIndex} id={`check-${optionIndex}`} value={option}>
+                  <ToggleButton key={optionIndex} id={`check-${questionIndex}-$${optionIndex}`} value={option}>
                     {option}
                   </ToggleButton>
                 ))}
@@ -109,7 +105,7 @@ export const SurveyForm = ({ surveyData, onChange, onSubmit, answers}) => {
                 onChange={(value) => handleInputChange(questionIndex, value)}
               >
                 {question.options.map((option, optionIndex) => (
-                  <ToggleButton key={optionIndex} id={`radio-${optionIndex}`} value={option}>
+                  <ToggleButton key={optionIndex} id={`radio-${questionIndex}-${optionIndex}`} value={option}>
                     {option}
                   </ToggleButton>
                 ))}
