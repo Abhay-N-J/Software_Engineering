@@ -10,8 +10,7 @@ export const Question = ({ state, name, onChange }) => {
         Options: 4
         
     }
-    const [input, setInput] = useState(enumOptions.Text);
-
+    const [input, setInput] = useState(parseInt(state.type));
     const add = () => {
         if (state.options.length < 10) {
             state.options.push("Option")
@@ -53,12 +52,12 @@ export const Question = ({ state, name, onChange }) => {
             {input === enumOptions.CheckBox ? (
                 <>
                     <p>Add Options for CheckBox</p>
-                    <Options onChange={handleChange} type={state.type} option={state.options} add={add} remove={remove}/>
+                    <Options onChange={handleChange} option={state.options} add={add} remove={remove}/>
                 </>
             ) : input === enumOptions.RadioButton ? (
                 <>
                     <p>Add Options for Radio Buttons</p>
-                    <Options onChange={handleChange} type={state.type} option={state.options} add={add} remove={remove}/>
+                    <Options onChange={handleChange} option={state.options} add={add} remove={remove}/>
                 </>
             ) : (
                 <input></input>
@@ -68,7 +67,7 @@ export const Question = ({ state, name, onChange }) => {
             <ToggleButtonGroup
                 type="radio"
                 name={`options-${name}`}
-                defaultValue={state.type}   
+                defaultValue={parseInt(state.type)}   
                 onChange={value => handleChange(value, value)}
                 >
                 <ToggleButton
@@ -101,7 +100,7 @@ export const Question = ({ state, name, onChange }) => {
     );
 }
 
-const Options = ({onChange, type, option, add, remove}) => {
+const Options = ({onChange, option, add, remove}) => {
     
     const handleChange = (e) => {
         option[e.currentTarget.id] = e.currentTarget.value;
