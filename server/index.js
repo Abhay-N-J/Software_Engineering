@@ -253,8 +253,9 @@ process.on('SIGINT', function(params) {
     mongoose.disconnect()
         .then(() => {
             console.log("Exiting...")
+            server.close()
         })
-    server.close()
+    
 });
 
 
