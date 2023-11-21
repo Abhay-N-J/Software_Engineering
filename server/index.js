@@ -109,7 +109,10 @@ app.get('/survey', async (req, res, next) => {
     try {
         const user = req.query.user;
         const survey = req.query.survey;
-        const doc = await surveyModel.findOne({email: user})
+        var email = Buffer.from(user, 'hex').toString('utf-8');
+        var doc = await surveyModel.findOne({email: email})
+        if (doc === null)
+            doc = await surveyModel.findOne({email: user})
         if (!doc || !doc.surveys[survey]) {
             return res.status(404).json({
                 error: "User or Survey not found"
@@ -122,9 +125,80 @@ app.get('/survey', async (req, res, next) => {
 
     }
     catch (err) {
+        console.log(err)
+
         next(err)
     }
 }) 
+
+app.get('/answers', async (req, res, next) => {
+    try {
+        const user = req.query.user;
+        const survey = req.query.survey;
+        var email = Buffer.from(user, 'hex').toString('utf-8');
+        var doc = await answerModel.findOne({email: email, survey: survey})
+        if (doc === null)
+            doc = await answerModel.findOne({email: user, survey: survey})
+        if (!doc) {
+            return res.status(404).json({
+                error: "User or Survey not found"
+            })
+        }
+        return res.status(200).json({
+            error: false,
+            answers: doc.answers
+        })
+
+    }
+    catch (err) {
+        console.log(err)
+        next(err)
+    }
+})
+
+app.get('/list', async (req, res, next) => {
+    try {
+        const user = req.query.user;
+        const email = Buffer.from(user, 'hex').toString('utf-8')
+        const doc = await surveyModel.findOne({email: email})
+        let surveys = []
+        Object.keys(doc.surveys).map((v, i) => {
+            surveys.push(v)
+        })
+        return res.status(200).json({
+            surveys: surveys,
+            error: false
+        })
+    }
+    catch (err) {
+        next(err)
+    }
+})
+
+app.delete('/delete/:user/:survey', async (req, res, next) => {
+    try {
+        const survey = req.params.survey
+        const user = req.params.user
+        const email = Buffer.from(user, 'hex').toString('utf-8')
+        const doc = await surveyModel.findOne({email: email})
+        let surveys = doc.surveys;
+        delete surveys[survey];
+        surveyModel.findOneAndUpdate({email: email}, {
+            email: email,
+            surveys: surveys
+            },
+        ).then(doc => {
+            if (doc)
+            return res.status(200).json({
+                error: false,      
+            })
+        })
+    }
+    catch (err) {
+        console.log(err)
+        next(err)
+    }
+})
 
 app.put('/submit', async (req, res, next) => {
     try {

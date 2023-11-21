@@ -5,6 +5,9 @@ import { getToken } from "./Misc/Tokens";
 import { CreateSurvey } from "./Components/CreateSurvey";
 import "./App.css";
 import { View } from "./Components/View";
+import { EditSurvey } from "./Components/EditSurvey";
+import { ListSurveys } from "./Components/ListSurveys";
+import { ReportPage } from "./Components/Report";
 
 function App() {
 
@@ -21,9 +24,12 @@ function App() {
 					{auth ? (
 					<>
 						<Route path="/" element={<CreateSurvey />} />
+						<Route path="/edit" element={<EditSurvey />} />
 						<Route path="/view" element={<View />} />
 						<Route path="/login" element={<Auth login={true} />} />
 						<Route path="/signup" element={<Auth login={false} />} />
+						<Route path="/list" element={<ListSurveys />} />
+						<Route path="/report" element={<ReportPage />} />
 					</>
 					) : (
 					<>

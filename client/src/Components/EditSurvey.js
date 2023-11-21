@@ -5,12 +5,40 @@ import { Question } from "./Question";
 import Axios from "../Misc/Axios";
 import { getToken } from "../Misc/Tokens";
 
-export const CreateSurvey = () => {
+export const EditSurvey = () => {
     const [qs, setQs] = useState([{
         type: 2,
         question: "Answer this",
         options: ["Option-1", "Option-2"]
     }]);
+
+    const [input, setInput] = useState('input');
+    const [surveys, setSurveys] = useState([]);
+
+    useEffect(() => {
+        console.log("input")
+
+        if (input === 'input') {
+            Axios.get('/list', {params: { user: getToken().user}})
+            .then(res => {
+                setSurveys(res.data.surveys)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+        }
+        else if (input !== 'edit') {
+            Axios.get('/survey', {params: {survey: input, user: getToken().user}})
+            .then(res => {
+                setQs(res.data.survey)
+                setInput('edit')
+            })
+            .catch(e => {
+                console.log(e)
+            })
+        }
+    }, [input])
+
     const snackbarRef = useRef();
     const nameRef = useRef();
 
@@ -68,18 +96,33 @@ export const CreateSurvey = () => {
                 _showSnackbarHandler(e.message)
         })
     }
-    return (
-        <div className="text-center">
-            <Snackbar ref = {snackbarRef}  />
-            <Form onSubmit={onSubmit}>
-                <input placeholder="SurveyName" required ref={nameRef}></input>
-                {qs.map((v, i) => (
-                    <Question key={i} name={i} state={v} onChange={onChange} />
+    if (input === 'input') {
+        return (
+            <div className="text-centere">
+                {surveys.map((v, i) => (
+                    <>
+                        <Button value={v} onClick={e => setInput(e.currentTarget.value)}>{v}</Button>
+                        <br />
+                    </>
                 ))}
-                <Button  onClick={addQs} > Add Question </Button> {' '} <Button variant="danger" onClick={removeQs}>Remove Question</Button>
-                <br />  
-                <Button type="submit" variant="success" >Create Survey</Button>
-            </Form>
-        </div>
-    )
+            </div>
+        )
+    }
+    if (input === 'edit') {
+    
+        return (
+            <div className="text-center">
+                <Snackbar ref = {snackbarRef}  />
+                <Form onSubmit={onSubmit}>
+                    <input placeholder="SurveyName" ref={nameRef}></input>
+                    {qs.map((v, i) => (
+                        <Question key={i} name={i} state={v} onChange={onChange} />
+                    ))}
+                    <Button  onClick={addQs} > Add Question </Button> {' '} <Button variant="danger" onClick={removeQs}>Remove Question</Button>
+                    <br />  
+                    <Button type="submit" variant="success" >Create Survey</Button>
+                </Form>
+            </div>
+        )
+    } 
 }
