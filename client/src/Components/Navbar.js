@@ -8,7 +8,7 @@ const icons=[
     {name:"View",path:"/view"},
     {name:"List",path:"/list"},
     {name:"Report",path:"/report"},
-    {name:"Logout",path:"/"},
+    {name:"Logout",path:"/login"},
 ]
 
 function NavbarTemplate(props){
@@ -18,7 +18,7 @@ function NavbarTemplate(props){
         display:"inline-block",
         color:"black",
         border:"1px solid black",
-        width:"16.66vw",
+        width:"16vw",
         textAlign:"center",
         height:"40px",
         padding:"5px",

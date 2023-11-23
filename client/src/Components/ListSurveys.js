@@ -42,6 +42,12 @@ export const ListSurveys = () => {
     const genReport = v => {
         navigate("/report", {state: {survey: v}})
     }
+
+    const genLink = v => {
+        console.log(v)
+        const consss = `locahost:3000/view?survey=${v}&user=${localStorage.getItem('email')}`
+        window.open(consss)
+    }
     
     return (        
         <div className="d-flex justify-content-center">
@@ -66,6 +72,15 @@ export const ListSurveys = () => {
                 {surveys.map((v, i) => (
                     <>
                         <Button style={{height: "50px"}} onClick={_ => genReport(v)} >Genterate Report</Button>
+                        <br ></br>
+                    </>
+                ))
+                }
+            </div>
+            <div className="ml-3">
+                {surveys.map((v, i) => (
+                    <>
+                        <Button style={{height: "50px"}} onClick={_ => genLink(v)} >View</Button>
                         <br ></br>
                     </>
                 ))

@@ -29,6 +29,8 @@ export default function Auth({login}) {
     const onSignIn = (body) => {
         clear()
         setLoading(true);
+        console.log(body)
+        localStorage.setItem("email",body.email)
         Axios.post('/login', body, { 
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -36,6 +38,7 @@ export default function Auth({login}) {
         })
         .then(response => {
             if (response?.data?.error === false) {
+                // console.log(response.data)
                 setToken(JSON.stringify(response.data.token))
                 navigate('/')
             }
