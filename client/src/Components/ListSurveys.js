@@ -45,7 +45,7 @@ export const ListSurveys = () => {
 
     const genLink = v => {
         console.log(v)
-        const consss = `locahost:3000/view?survey=${v}&user=${localStorage.getItem('email')}`
+        const consss = `localhost:3000/view?survey=${v}&user=${localStorage.getItem('email')}`
         window.open(consss)
     }
     

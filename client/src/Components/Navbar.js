@@ -5,9 +5,7 @@ import { Link } from "react-router-dom";
 const icons=[
     {name:"Home",path:"/"},
     {name:"Edit",path:"/edit"},
-    {name:"View",path:"/view"},
     {name:"List",path:"/list"},
-    {name:"Report",path:"/report"},
     {name:"Logout",path:"/login"},
 ]
 
@@ -18,7 +16,7 @@ function NavbarTemplate(props){
         display:"inline-block",
         color:"black",
         border:"1px solid black",
-        width:"16vw",
+        width:"24.5vw",
         textAlign:"center",
         height:"40px",
         padding:"5px",
